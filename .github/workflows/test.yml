@@ -1,0 +1,29 @@
+name: test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: setup golang
+        uses: actions/setup-go@v4.1.0
+        with:
+          go-version-file: "go.mod"
+      - name: run tests
+        run: go test -cover -v ./...
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: run revive
+        uses: morphy2k/revive-action@v2.5.4
+        with:
+          exclude: "./vendor/..."
