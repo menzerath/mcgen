@@ -30,6 +30,7 @@ jobs:
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: 0
         run: go build -o build/mcgen_${{ matrix.goos }}_${{ matrix.goarch }}${{ env.SUFFIX }} main.go
       - name: store binary
         uses: actions/upload-artifact@v3.1.3
