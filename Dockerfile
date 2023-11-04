@@ -6,6 +6,6 @@ ENV MODE=production
 RUN apk add -U --no-cache ca-certificates
 
 WORKDIR /app
-COPY --chmod=0755 build/mcgen_linux_amd64 mcgen
+COPY --chmod=0755 build/linux_amd64/mcgen_linux_amd64 mcgen
 
 ENTRYPOINT ["./mcgen"]
