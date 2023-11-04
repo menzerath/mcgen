@@ -4,7 +4,7 @@ package assets
 var LegacyIconMappings = map[string]string{
 	"1":  "grass",
 	"2":  "diamond",
-	"3":  "diamond_sword",
+	"3":  "sword_diamond",
 	"4":  "creeper",
 	"5":  "pig",
 	"6":  "tnt",
