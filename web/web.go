@@ -29,6 +29,7 @@ func (web WebAPI) StartWebAPI() {
 	app := fiber.New()
 
 	// register all routes
+	app.Get("", web.redirectToGitHub)
 	app.Get("/a.php", web.legacyAPIQuery)
 	app.Get("/a/:background/:title/:text", web.legacyAPIPath)
 	app.Get("/api/v1/achievement", web.achievementGet)
@@ -51,6 +52,10 @@ func (web WebAPI) StartWebAPI() {
 		slog.Error("web api listening", "error", err)
 	}
 	slog.Warn("web api stopped")
+}
+
+func (web WebAPI) redirectToGitHub(c *fiber.Ctx) error {
+	return c.Redirect("https://github.com/menzerath/mcgen")
 }
 
 func (web WebAPI) legacyAPIQuery(c *fiber.Ctx) error {
