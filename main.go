@@ -1,3 +1,4 @@
+// Package main provides the entrypoint for mcgen.
 package main
 
 import (
@@ -5,11 +6,13 @@ import (
 	"os"
 
 	"github.com/menzerath/mcgen/generator"
+	"github.com/menzerath/mcgen/metrics"
 	"github.com/menzerath/mcgen/web"
 )
 
 func main() {
 	initLogging()
+	go metrics.ExposeMetrics()
 
 	gen, err := generator.New()
 	if err != nil {

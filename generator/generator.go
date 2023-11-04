@@ -8,10 +8,12 @@ import (
 	"image/color"
 	"image/png"
 	"log/slog"
+	"time"
 
 	"github.com/fogleman/gg"
 	"github.com/golang/freetype/truetype"
 	"github.com/menzerath/mcgen/assets"
+	"github.com/menzerath/mcgen/metrics"
 	"golang.org/x/image/font"
 )
 
@@ -75,6 +77,7 @@ func New() (Generator, error) {
 // It will return an error if the background is unknown.
 func (generator Generator) Generate(background string, textTop string, textBottom string) ([]byte, error) {
 	slog.Info("generating image", "background", background, "textTop", textTop, "textBottom", textBottom)
+	timeStart := time.Now()
 
 	// load background template
 	template, exists := generator.Backgrounds[fmt.Sprintf("%s.png", background)]
@@ -97,5 +100,7 @@ func (generator Generator) Generate(background string, textTop string, textBotto
 	if err := png.Encode(buffer, dc.Image()); err != nil {
 		return nil, fmt.Errorf("encoding image: %w", err)
 	}
+
+	metrics.AchievementGenerationRuntime.Observe(time.Now().Sub(timeStart).Seconds())
 	return buffer.Bytes(), nil
 }
