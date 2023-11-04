@@ -3,6 +3,7 @@ package web
 
 import (
 	"log/slog"
+	"net/url"
 	"os"
 	"os/signal"
 
@@ -28,7 +29,8 @@ func (web WebAPI) StartWebAPI() {
 	app := fiber.New()
 
 	// register all routes
-	app.Get("/a.php", web.legacyAPI)
+	app.Get("/a.php", web.legacyAPIQuery)
+	app.Get("/a/:background/:title/:text", web.legacyAPIPath)
 	app.Get("/api/v1/achievement", web.achievementGet)
 	app.Post("/api/v1/achievement", web.achievementPost)
 
@@ -51,7 +53,7 @@ func (web WebAPI) StartWebAPI() {
 	slog.Warn("web api stopped")
 }
 
-func (web WebAPI) legacyAPI(c *fiber.Ctx) error {
+func (web WebAPI) legacyAPIQuery(c *fiber.Ctx) error {
 	// map the legacy icon ID to the new background name
 	background, _ := assets.LegacyIconMappings[c.Query("i")]
 
@@ -68,6 +70,37 @@ func (web WebAPI) legacyAPI(c *fiber.Ctx) error {
 			Title:      c.Query("h"),
 			Text:       c.Query("t"),
 			Output:     output,
+		},
+	)
+}
+
+func (web WebAPI) legacyAPIPath(c *fiber.Ctx) error {
+	// map the legacy icon ID to the new background name
+	background, _ := assets.LegacyIconMappings[c.Params("background")]
+
+	// decode the title and text
+	title, err := url.QueryUnescape(c.Params("title"))
+	if err != nil {
+		return c.Status(400).JSON(ErrorResponse{
+			Error:   err.Error(),
+			Message: "invalid title",
+		})
+	}
+	text, err := url.QueryUnescape(c.Params("text"))
+	if err != nil {
+		return c.Status(400).JSON(ErrorResponse{
+			Error:   err.Error(),
+			Message: "invalid text",
+		})
+	}
+
+	return web.generateAndReturnAchievement(
+		c,
+		AchievementRequest{
+			Background: background,
+			Title:      title,
+			Text:       text,
+			Output:     AchievementOutputTypeDefault,
 		},
 	)
 }

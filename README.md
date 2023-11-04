@@ -27,6 +27,12 @@ We also support the legacy api of https://github.com/menzerath/minecraft-achieve
 /a.php?i=3&h=Achievement%20Title&t=Achievement%20Text
 ```
 
+#### GET `/a/:background/:title/:text`
+We also support the legacy api of https://github.com/menzerath/minecraft-achievement-generator.
+```
+/a/3/Achievement%20Title/Achievement%20Text
+```
+
 ### Icons
 Available icons are listed in [this](assets/backgrounds) directory.  
 Use their filename without the `.png` extension as the `background` parameter.
