@@ -44,7 +44,7 @@ func (web WebAPI) StartWebAPI() {
 	// register all routes
 	app.Get("", web.redirectToGitHub)
 	app.Get("/a.php", web.legacyAPIQuery)
-	app.Get("/a/:background/:title/:text", web.legacyAPIPath)
+	app.Get("/a/:background/:title/:text/*", web.legacyAPIPath)
 	app.Get("/api/v1/achievement", web.achievementGet)
 	app.Post("/api/v1/achievement", web.achievementPost)
 
@@ -99,14 +99,14 @@ func (web WebAPI) legacyAPIPath(c *fiber.Ctx) error {
 	// decode the title and text
 	title, err := url.QueryUnescape(c.Params("title"))
 	if err != nil {
-		return c.Status(400).JSON(ErrorResponse{
+		return c.Status(fiber.StatusBadRequest).JSON(ErrorResponse{
 			Error:   err.Error(),
 			Message: "invalid title",
 		})
 	}
 	text, err := url.QueryUnescape(c.Params("text"))
 	if err != nil {
-		return c.Status(400).JSON(ErrorResponse{
+		return c.Status(fiber.StatusBadRequest).JSON(ErrorResponse{
 			Error:   err.Error(),
 			Message: "invalid text",
 		})
@@ -138,7 +138,7 @@ func (web WebAPI) achievementGet(c *fiber.Ctx) error {
 func (web WebAPI) achievementPost(c *fiber.Ctx) error {
 	var request AchievementRequest
 	if err := c.BodyParser(request); err != nil {
-		return c.Status(400).JSON(ErrorResponse{
+		return c.Status(fiber.StatusBadRequest).JSON(ErrorResponse{
 			Error:   err.Error(),
 			Message: "invalid request body",
 		})
@@ -160,12 +160,12 @@ func (web WebAPI) generateAndReturnAchievement(c *fiber.Ctx, request Achievement
 	achievement, err := web.Generator.Generate(request.Background, request.Title, request.Text)
 	if err != nil {
 		if err == generator.ErrUnknownBackground {
-			return c.Status(400).JSON(ErrorResponse{
+			return c.Status(fiber.StatusBadRequest).JSON(ErrorResponse{
 				Error:   err.Error(),
 				Message: "unknown background",
 			})
 		}
-		return c.Status(500).JSON(ErrorResponse{
+		return c.Status(fiber.StatusInternalServerError).JSON(ErrorResponse{
 			Error:   err.Error(),
 			Message: "could not generate achievement",
 		})
@@ -177,10 +177,10 @@ func (web WebAPI) generateAndReturnAchievement(c *fiber.Ctx, request Achievement
 		c.Set("Content-Description", "File Transfer")
 		c.Set("Content-Type", "application/octet-image")
 		c.Set("Content-Disposition", "attachment; filename=achievement.png")
-		return c.Status(200).Send(achievement)
+		return c.Status(fiber.StatusOK).Send(achievement)
 	}
 
 	// return image in response
 	c.Type("png")
-	return c.Status(200).Send(achievement)
+	return c.Status(fiber.StatusOK).Send(achievement)
 }
