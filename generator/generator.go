@@ -8,6 +8,7 @@ import (
 	"image/color"
 	"image/png"
 	"log/slog"
+	"sync"
 	"time"
 
 	"github.com/fogleman/gg"
@@ -26,29 +27,31 @@ var (
 type Generator struct {
 	Backgrounds map[string]image.Image
 	FontFace    font.Face
+
+	imageWritingLock sync.Mutex
 }
 
 // New returns a new generator.
 // It loads all embedded assets for quick access when needed.
-func New() (Generator, error) {
-	generator := Generator{
+func New() (*Generator, error) {
+	generator := &Generator{
 		Backgrounds: make(map[string]image.Image),
 	}
 
 	// read all embedded background files and put them into our generator's map
 	files, err := assets.Backgrounds.ReadDir("backgrounds")
 	if err != nil {
-		return Generator{}, fmt.Errorf("reading backgrounds: %w", err)
+		return nil, fmt.Errorf("reading backgrounds: %w", err)
 	}
 	for _, file := range files {
 		content, err := assets.Backgrounds.ReadFile(fmt.Sprintf("backgrounds/%s", file.Name()))
 		if err != nil {
-			return Generator{}, fmt.Errorf("reading background %s: %w", file.Name(), err)
+			return nil, fmt.Errorf("reading background %s: %w", file.Name(), err)
 		}
 
 		background, _, err := image.Decode(bytes.NewReader(content))
 		if err != nil {
-			return Generator{}, fmt.Errorf("decoding background %s: %w", file.Name(), err)
+			return nil, fmt.Errorf("decoding background %s: %w", file.Name(), err)
 		}
 
 		generator.Backgrounds[file.Name()] = background
@@ -59,7 +62,7 @@ func New() (Generator, error) {
 	// parse the font and store it in our generator
 	parsedFont, err := truetype.Parse(assets.FontFile)
 	if err != nil {
-		return Generator{}, fmt.Errorf("parsing font: %w", err)
+		return nil, fmt.Errorf("parsing font: %w", err)
 	}
 	generator.FontFace = truetype.NewFace(
 		parsedFont,
@@ -75,7 +78,7 @@ func New() (Generator, error) {
 
 // Generate generates an achievement image with the given background and text.
 // It will return an error if the background is unknown.
-func (generator Generator) Generate(background string, textTop string, textBottom string) ([]byte, error) {
+func (generator *Generator) Generate(background string, textTop string, textBottom string) ([]byte, error) {
 	slog.Info("generating image", "background", background, "textTop", textTop, "textBottom", textBottom)
 	timeStart := time.Now()
 
@@ -89,11 +92,16 @@ func (generator Generator) Generate(background string, textTop string, textBotto
 	dc.SetFontFace(generator.FontFace)
 
 	// write text on background
+	// we need to lock this because the freetype library (used by gg when running DrawString) is not thread-safe
+	generator.imageWritingLock.Lock()
+
 	dc.SetColor(color.RGBA{R: 255, G: 255, B: 0, A: 255})
 	dc.DrawString(textTop, 60, 28)
 
 	dc.SetColor(color.RGBA{R: 255, G: 255, B: 255, A: 255})
 	dc.DrawString(textBottom, 60, 50)
+
+	generator.imageWritingLock.Unlock()
 
 	// encode image as bytes
 	buffer := new(bytes.Buffer)

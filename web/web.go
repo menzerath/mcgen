@@ -14,11 +14,11 @@ import (
 
 // WebAPI provides a web API for the generator using the fiber framework.
 type WebAPI struct {
-	Generator generator.Generator
+	Generator *generator.Generator
 }
 
 // New returns a new WebAPI.
-func New(generator generator.Generator) WebAPI {
+func New(generator *generator.Generator) WebAPI {
 	return WebAPI{
 		Generator: generator,
 	}
