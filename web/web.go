@@ -6,10 +6,14 @@ import (
 	"net/url"
 	"os"
 	"os/signal"
+	"time"
 
+	"github.com/ansrivas/fiberprometheus/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/menzerath/mcgen/assets"
 	"github.com/menzerath/mcgen/generator"
+	"github.com/menzerath/mcgen/metrics"
+	slogfiber "github.com/samber/slog-fiber"
 )
 
 // WebAPI provides a web API for the generator using the fiber framework.
@@ -26,7 +30,16 @@ func New(generator *generator.Generator) WebAPI {
 
 // StartWebAPI starts the WebAPI, registers all routes and blocks until the server is shut down.
 func (web WebAPI) StartWebAPI() {
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		ProxyHeader: fiber.HeaderXForwardedFor,
+	})
+
+	// collect (but don't expose!) prometheus metrics
+	fiberPrometheus := fiberprometheus.New("")
+	app.Use(fiberPrometheus.Middleware)
+
+	// enable logging
+	app.Use(slogfiber.New(slog.Default()))
 
 	// register all routes
 	app.Get("", web.redirectToGitHub)
@@ -135,6 +148,15 @@ func (web WebAPI) achievementPost(c *fiber.Ctx) error {
 }
 
 func (web WebAPI) generateAndReturnAchievement(c *fiber.Ctx, request AchievementRequest) error {
+	slog.Info(
+		"generating image",
+		"background", request.Background,
+		"title", request.Title,
+		"text", request.Text,
+		"request-id", c.Context().UserValue("request-id"),
+	)
+
+	timeStart := time.Now()
 	achievement, err := web.Generator.Generate(request.Background, request.Title, request.Text)
 	if err != nil {
 		if err == generator.ErrUnknownBackground {
@@ -148,6 +170,7 @@ func (web WebAPI) generateAndReturnAchievement(c *fiber.Ctx, request Achievement
 			Message: "could not generate achievement",
 		})
 	}
+	metrics.AchievementGenerationRuntime.Observe(time.Now().Sub(timeStart).Seconds())
 
 	// return image as download
 	if request.Output == AchievementOutputTypeDownload {
