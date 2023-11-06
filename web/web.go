@@ -48,6 +48,11 @@ func (web WebAPI) StartWebAPI() {
 	app.Get("/api/v1/achievement", web.achievementGet)
 	app.Post("/api/v1/achievement", web.achievementPost)
 
+	// register 404 handler
+	app.Use(func(c *fiber.Ctx) error {
+		return c.Status(fiber.StatusNotFound).SendString("Whatever you are looking for, it's not here ¯\\_(ツ)_/¯")
+	})
+
 	// enable a graceful shutdown
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
