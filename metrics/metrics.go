@@ -21,7 +21,7 @@ var (
 		Subsystem: subsystemGenerator,
 		Name:      "runtime",
 		Help:      "How long it took to generate an achievement image in seconds.",
-		Buckets:   prometheus.ExponentialBuckets(0.001, 1.5, 20),
+		Buckets:   prometheus.ExponentialBuckets(0.0001, 1.4, 30),
 	})
 )
 
