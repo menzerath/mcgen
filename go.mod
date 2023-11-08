@@ -9,7 +9,7 @@ require (
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/prometheus/client_golang v1.17.0
 	github.com/samber/slog-fiber v1.8.0
-	golang.org/x/image v0.13.0
+	golang.org/x/image v0.14.0
 )
 
 require (
