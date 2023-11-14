@@ -16,7 +16,7 @@ github.com/fogleman/gg
 # github.com/gofiber/adaptor/v2 v2.2.1
 ## explicit; go 1.17
 github.com/gofiber/adaptor/v2
-# github.com/gofiber/fiber/v2 v2.50.0
+# github.com/gofiber/fiber/v2 v2.51.0
 ## explicit; go 1.20
 github.com/gofiber/fiber/v2
 github.com/gofiber/fiber/v2/internal/schema
@@ -29,7 +29,7 @@ github.com/golang/freetype/truetype
 # github.com/golang/protobuf v1.5.3
 ## explicit; go 1.9
 github.com/golang/protobuf/proto
-# github.com/google/uuid v1.3.1
+# github.com/google/uuid v1.4.0
 ## explicit
 github.com/google/uuid
 # github.com/klauspost/compress v1.16.7
@@ -40,7 +40,7 @@ github.com/klauspost/compress/zlib
 # github.com/mattn/go-colorable v0.1.13
 ## explicit; go 1.15
 github.com/mattn/go-colorable
-# github.com/mattn/go-isatty v0.0.19
+# github.com/mattn/go-isatty v0.0.20
 ## explicit; go 1.15
 github.com/mattn/go-isatty
 # github.com/mattn/go-runewidth v0.0.15
@@ -103,8 +103,8 @@ golang.org/x/image/font
 golang.org/x/image/font/basicfont
 golang.org/x/image/math/f64
 golang.org/x/image/math/fixed
-# golang.org/x/sys v0.13.0
-## explicit; go 1.17
+# golang.org/x/sys v0.14.0
+## explicit; go 1.18
 golang.org/x/sys/unix
 golang.org/x/sys/windows
 # google.golang.org/protobuf v1.31.0
