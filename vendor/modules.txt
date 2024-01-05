@@ -16,7 +16,7 @@ github.com/fogleman/gg
 # github.com/gofiber/adaptor/v2 v2.2.1
 ## explicit; go 1.17
 github.com/gofiber/adaptor/v2
-# github.com/gofiber/fiber/v2 v2.51.0
+# github.com/gofiber/fiber/v2 v2.52.0
 ## explicit; go 1.20
 github.com/gofiber/fiber/v2
 github.com/gofiber/fiber/v2/internal/schema
@@ -26,10 +26,10 @@ github.com/gofiber/fiber/v2/utils
 ## explicit
 github.com/golang/freetype/raster
 github.com/golang/freetype/truetype
-# github.com/google/uuid v1.4.0
+# github.com/google/uuid v1.5.0
 ## explicit
 github.com/google/uuid
-# github.com/klauspost/compress v1.16.7
+# github.com/klauspost/compress v1.17.0
 ## explicit; go 1.18
 github.com/klauspost/compress/flate
 github.com/klauspost/compress/gzip
@@ -74,7 +74,7 @@ github.com/samber/slog-fiber
 # github.com/valyala/bytebufferpool v1.0.0
 ## explicit
 github.com/valyala/bytebufferpool
-# github.com/valyala/fasthttp v1.50.0
+# github.com/valyala/fasthttp v1.51.0
 ## explicit; go 1.20
 github.com/valyala/fasthttp
 github.com/valyala/fasthttp/fasthttpadaptor
