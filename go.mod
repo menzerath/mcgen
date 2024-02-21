@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/ansrivas/fiberprometheus/v2 v2.6.1
 	github.com/fogleman/gg v1.3.0
-	github.com/gofiber/fiber/v2 v2.52.0
+	github.com/gofiber/fiber/v2 v2.52.1
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/prometheus/client_golang v1.18.0
 	github.com/samber/slog-fiber v1.11.2
