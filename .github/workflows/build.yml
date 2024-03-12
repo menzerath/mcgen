@@ -82,6 +82,6 @@ jobs:
         with:
           path: build/
       - name: upload artifacts to release
-        uses: softprops/action-gh-release@v2.0.3
+        uses: softprops/action-gh-release@v2.0.4
         with:
           files: build/**/*
