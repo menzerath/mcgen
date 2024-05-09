@@ -7,7 +7,7 @@ require (
 	github.com/fogleman/gg v1.3.0
 	github.com/gofiber/fiber/v2 v2.52.4
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
-	github.com/prometheus/client_golang v1.19.0
+	github.com/prometheus/client_golang v1.19.1
 	github.com/samber/slog-fiber v1.14.1
 	golang.org/x/image v0.16.0
 )
@@ -31,6 +31,6 @@ require (
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.opentelemetry.io/otel v1.19.0 // indirect
 	go.opentelemetry.io/otel/trace v1.19.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
-	google.golang.org/protobuf v1.32.0 // indirect
+	golang.org/x/sys v0.17.0 // indirect
+	google.golang.org/protobuf v1.33.0 // indirect
 )
