@@ -42,8 +42,8 @@ github.com/prometheus/procfs v0.12.0/go.mod h1:pcuDEFsWDnvcgNzo4EEweacyhjeA9Zk3c
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/rivo/uniseg v0.4.4 h1:8TfxU8dW6PdqD27gjM8MVNuicgxIjxpm4K7x4jp8sis=
 github.com/rivo/uniseg v0.4.4/go.mod h1:FN3SvrM+Zdj16jyLfmOkMNblXMcoc8DfTHruCPUcx88=
-github.com/samber/slog-fiber v1.15.0 h1:ylPVotiQ68m00E4MWta7bECmgkboSvPddJ8GIcgnpus=
-github.com/samber/slog-fiber v1.15.0/go.mod h1:/HYPO+92ucooBHGNfDidjYj/P5nZMsXzDyjp8jmhkdA=
+github.com/samber/slog-fiber v1.15.2 h1:5VvH1rccIu8njvyaqQCAFJ6kArvy9N9xpbbed8DgHVA=
+github.com/samber/slog-fiber v1.15.2/go.mod h1:I0b8eJ060SlpA65LXiqH7lZixUCkAPKiEGZqkT9QJOM=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
 github.com/valyala/bytebufferpool v1.0.0 h1:GqA5TC/0021Y/b9FG4Oi9Mr3q7XYx6KllzawFIhcdPw=
