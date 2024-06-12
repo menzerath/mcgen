@@ -18,7 +18,7 @@ jobs:
         goos: [linux, windows, darwin]
         goarch: [amd64, arm64]
     steps:
-      - uses: actions/checkout@v4.1.6
+      - uses: actions/checkout@v4.1.7
       - name: setup golang
         uses: actions/setup-go@v5.0.1
         with:
@@ -45,7 +45,7 @@ jobs:
       packages: write
     steps:
       - name: checkout repository
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
       - name: download binary
         uses: actions/download-artifact@v4.1.7
         with:
