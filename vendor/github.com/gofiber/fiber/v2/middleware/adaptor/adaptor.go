@@ -1,20 +1,17 @@
-// 🚀 Fiber is an Express inspired web framework written in Go with 💖
-// 📌 API Documentation: https://fiber.wiki
-// 📝 Github Repository: https://github.com/gofiber/fiber
-
 package adaptor
 
 import (
-	"io/ioutil"
+	"io"
 	"net"
 	"net/http"
 	"reflect"
 	"unsafe"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/utils"
 	"github.com/valyala/fasthttp"
 	"github.com/valyala/fasthttp/fasthttpadaptor"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/utils"
 )
 
 // HTTPHandlerFunc wraps net/http handler func to fiber handler
@@ -29,6 +26,16 @@ func HTTPHandler(h http.Handler) fiber.Handler {
 		handler(c.Context())
 		return nil
 	}
+}
+
+// ConvertRequest converts a fiber.Ctx to a http.Request.
+// forServer should be set to true when the http.Request is going to be passed to a http.Handler.
+func ConvertRequest(c *fiber.Ctx, forServer bool) (*http.Request, error) {
+	var req http.Request
+	if err := fasthttpadaptor.ConvertRequest(c.Context(), &req, forServer); err != nil {
+		return nil, err //nolint:wrapcheck // This must not be wrapped
+	}
+	return &req, nil
 }
 
 // CopyContextToFiberContext copies the values of context.Context to a fasthttp.RequestCtx
@@ -69,6 +76,7 @@ func HTTPMiddleware(mw func(http.Handler) http.Handler) fiber.Handler {
 			c.Request().Header.SetMethod(r.Method)
 			c.Request().SetRequestURI(r.RequestURI)
 			c.Request().SetHost(r.Host)
+			c.Request().Header.SetHost(r.Host)
 			for key, val := range r.Header {
 				for _, v := range val {
 					c.Request().Header.Set(key, v)
@@ -76,7 +84,11 @@ func HTTPMiddleware(mw func(http.Handler) http.Handler) fiber.Handler {
 			}
 			CopyContextToFiberContext(r.Context(), c.Context())
 		})
-		_ = HTTPHandler(mw(nextHandler))(c)
+
+		if err := HTTPHandler(mw(nextHandler))(c); err != nil {
+			return err
+		}
+
 		if next {
 			return c.Next()
 		}
@@ -106,23 +118,24 @@ func handlerFunc(app *fiber.App, h ...fiber.Handler) http.HandlerFunc {
 		defer fasthttp.ReleaseRequest(req)
 		// Convert net/http -> fasthttp request
 		if r.Body != nil {
-			body, err := ioutil.ReadAll(r.Body)
+			n, err := io.Copy(req.BodyWriter(), r.Body)
+			req.Header.SetContentLength(int(n))
+
 			if err != nil {
 				http.Error(w, utils.StatusMessage(fiber.StatusInternalServerError), fiber.StatusInternalServerError)
 				return
 			}
-			req.Header.SetContentLength(len(body))
-			_, _ = req.BodyWriter().Write(body)
 		}
 		req.Header.SetMethod(r.Method)
 		req.SetRequestURI(r.RequestURI)
 		req.SetHost(r.Host)
+		req.Header.SetHost(r.Host)
 		for key, val := range r.Header {
 			for _, v := range val {
 				req.Header.Set(key, v)
 			}
 		}
-		if _, _, err := net.SplitHostPort(r.RemoteAddr); err != nil && err.(*net.AddrError).Err == "missing port in address" {
+		if _, _, err := net.SplitHostPort(r.RemoteAddr); err != nil && err.(*net.AddrError).Err == "missing port in address" { //nolint:errorlint, forcetypeassert // overlinting
 			r.RemoteAddr = net.JoinHostPort(r.RemoteAddr, "80")
 		}
 		remoteAddr, err := net.ResolveTCPAddr("tcp", r.RemoteAddr)
@@ -141,7 +154,7 @@ func handlerFunc(app *fiber.App, h ...fiber.Handler) http.HandlerFunc {
 			// Execute fiber Ctx
 			err := h[0](ctx)
 			if err != nil {
-				_ = app.Config().ErrorHandler(ctx, err)
+				_ = app.Config().ErrorHandler(ctx, err) //nolint:errcheck // not needed
 			}
 		} else {
 			// Execute fasthttp Ctx though app.Handler
@@ -153,6 +166,6 @@ func handlerFunc(app *fiber.App, h ...fiber.Handler) http.HandlerFunc {
 			w.Header().Add(string(k), string(v))
 		})
 		w.WriteHeader(fctx.Response.StatusCode())
-		_, _ = w.Write(fctx.Response.Body())
+		_, _ = w.Write(fctx.Response.Body()) //nolint:errcheck // not needed
 	}
 }
