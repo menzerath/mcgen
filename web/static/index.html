@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Minecraft Achievement Generator</title>
+    <link rel="stylesheet" type="text/css" href="style.css" media="all">
+    <meta name="viewport" content="width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" sizes="196x196" href="images/favicon.png">
+    <meta name="description" content="Minecraft Achievement Generator for your website, forum, YouTube channel and more.">
+</head>
+
+<body>
+    <h1>
+        <img class="logo" src="images/logo.png" alt="Minecraft Achievement Generator">
+    </h1>
+    <div id="container">
+        <div id="generator">
+            <div id="form">
+                <h2>Design your Achievement...</h2>
+                <form>
+                    <label>1.) Yellow Title
+                        <input name="title" type="text" tabindex="1" maxlength="25" placeholder="Title goes here" value="Title goes here">
+                    </label>
+
+                    <label>2.) White Text
+                        <input name="text" type="text" tabindex="2" maxlength="25" placeholder="Text goes here" value="Text goes here">
+                    </label>
+
+                    <label>3.) Choose an Icon
+                        <select name="background" tabindex="3">
+                            <option value="stone" selected="selected">Stone</option>
+                            <option value="grass">Grass</option>
+                            <option value="planks">Wooden Plank</option>
+                            <option value="crafting_table">Crafting Table</option>
+                            <option value="furnace">Furnace</option>
+                            <option value="chest">Chest</option>
+                            <option value="bed">Bed</option>
+                            <option value="coal">Coal</option>
+                            <option value="iron">Iron</option>
+                            <option value="gold">Gold</option>
+                            <option value="diamond">Diamond</option>
+                            <option value="sign">Sign</option>
+                            <option value="book">Book</option>
+                            <option value="door_wood">Wooden Door</option>
+                            <option value="door_iron">Iron Door</option>
+                            <option value="redstone">Redstone</option>
+                            <option value="rail">Rail</option>
+                            <option value="bow">Bow</option>
+                            <option value="arrow">Arrow</option>
+                            <option value="sword_iron">Iron Sword</option>
+                            <option value="sword_diamond">Diamond Sword</option>
+                            <option value="chestplate_iron">Iron Chestplate</option>
+                            <option value="chestplate_diamond">Diamond Chestplate</option>
+                            <option value="tnt">TNT</option>
+                            <option value="flint_and_steel">Flint And Steel</option>
+                            <option value="fire">Fire</option>
+                            <option value="bucket">Bucket</option>
+                            <option value="bucket_water">Water Bucket</option>
+                            <option value="bucket_lava">Lava Bucket</option>
+                            <option value="cookie">Cookie</option>
+                            <option value="cake">Cake</option>
+                            <option value="bucket_milk">Milk Bucket</option>
+                            <option value="creeper">Creeper</option>
+                            <option value="pig">Pig</option>
+                            <option value="spawn_egg">Spawn Egg</option>
+                            <option value="heart">Heart</option>
+                            <option value="cobweb">Cobweb</option>
+                            <option value="potion">Potion</option>
+                            <option value="splash_potion">Splash Potion</option>
+                        </select>
+                    </label>
+                </form>
+            </div>
+
+            <div id="output">
+                <h2>... and download it!</h2>
+                <img id="achievement" src="api/v1/achievement?background=crafting_table&title=Change%20text%20or%20icon&text=to%20get%20started!" alt="Your Achievement">
+                <div id="links">
+                    <div class="link">
+                        <span>URL:</span>
+                        <input type="text" id="out-url">
+                    </div>
+                    <div class="link">
+                        <span>HTML:</span>
+                        <input type="text" id="out-html">
+                    </div>
+                    <div class="link">
+                        <span>BBCode:</span>
+                        <input type="text" id="out-bb">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            Powered by <a href="https://github.com/menzerath/mcgen" target="_blank">mcgen</a> |
+            © Minecraft &amp; Images <a href="http://www.mojang.com" target="_blank">Mojang Studios</a>
+        </footer>
+    </div>
+    <script src="application.js"></script>
+</body>
+
+</html>

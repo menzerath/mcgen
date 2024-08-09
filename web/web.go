@@ -3,6 +3,7 @@ package web
 
 import (
 	"log/slog"
+	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
@@ -10,6 +11,7 @@ import (
 
 	"github.com/ansrivas/fiberprometheus/v2"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/menzerath/mcgen/assets"
 	"github.com/menzerath/mcgen/generator"
 	"github.com/menzerath/mcgen/metrics"
@@ -42,7 +44,10 @@ func (web WebAPI) StartWebAPI() {
 	app.Use(slogfiber.New(slog.Default()))
 
 	// register all routes
-	app.Get("", web.redirectToGitHub)
+	app.Use("/", filesystem.New(filesystem.Config{
+		Root:       http.FS(static),
+		PathPrefix: "static",
+	}))
 	app.Get("/a.php", web.legacyAPIQuery)
 	app.Get("/a/:background/:title/:text/*", web.legacyAPIPath)
 	app.Get("/api/v1/achievement", web.achievementGet)
@@ -70,10 +75,6 @@ func (web WebAPI) StartWebAPI() {
 		slog.Error("web api listening", "error", err)
 	}
 	slog.Warn("web api stopped")
-}
-
-func (web WebAPI) redirectToGitHub(c *fiber.Ctx) error {
-	return c.Redirect("https://github.com/menzerath/mcgen")
 }
 
 func (web WebAPI) legacyAPIQuery(c *fiber.Ctx) error {
