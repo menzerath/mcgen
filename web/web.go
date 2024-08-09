@@ -15,6 +15,7 @@ import (
 	"github.com/menzerath/mcgen/assets"
 	"github.com/menzerath/mcgen/generator"
 	"github.com/menzerath/mcgen/metrics"
+	"github.com/prometheus/client_golang/prometheus"
 	slogfiber "github.com/samber/slog-fiber"
 )
 
@@ -37,7 +38,7 @@ func (web WebAPI) StartWebAPI() {
 	})
 
 	// collect (but don't expose!) prometheus metrics
-	fiberPrometheus := fiberprometheus.New("")
+	fiberPrometheus := fiberprometheus.NewWithRegistry(prometheus.DefaultRegisterer, "", "http", "", nil)
 	app.Use(fiberPrometheus.Middleware)
 
 	// enable logging
