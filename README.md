@@ -1,11 +1,16 @@
 # mcgen - Minecraft Achievement Generator
 mcgen is a Golang-based JSON web API for generating custom Minecraft achievements.
 
+![Example Achievement](https://mcgen.menzerath.eu/api/v1/achievement?background=sword_diamond&title=Minecraft%20Achievement&text=Generator%20-%20in%20Golang)
 
 ## Usage
-A demo of the API is available at https://mcgen.menzerath.eu.
+A demo of the UI and API is available at https://mcgen.menzerath.eu.
 
-### Requests
+### UI
+A simple UI is available at the base URL.  
+It allows you to generate achievements with a live preview using the API.
+
+### API
 
 #### GET `/api/v1/achievement`
 ```
