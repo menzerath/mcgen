@@ -52,16 +52,21 @@ img.logo {
     border-right: 1px dotted #ccc;
 }
 
-#output {
+#result {
     flex: 1;
     padding-left: 1em;
 }
 
-#achievement {
-    cursor: pointer;
-    padding-bottom: 1em;
+#image {
+    display: flex;
+    justify-content: center;
 
     border-bottom: 1px dotted #ccc;
+    padding-bottom: 1em;
+}
+
+#achievement {
+    cursor: pointer;
 }
 
 #links {
@@ -70,6 +75,7 @@ img.logo {
 
 .link {
     display: flex;
+    margin-bottom: .2em;
 }
 
 .link span {
@@ -88,13 +94,11 @@ footer {
 footer a {
     color: #999999;
     border-bottom: 1px dotted #999999;
+    text-decoration: none;
 }
 
-input {
-    width: 98%;
-}
-
-select {
+input, select {
+    box-sizing: border-box;
     width: 100%;
 }
 
@@ -127,7 +131,7 @@ label {
         border-bottom: 1px dotted #999999;
     }
 
-    #output {
+    #result {
         padding-left: 0;
 
         padding-top: 1em;
