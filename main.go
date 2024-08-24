@@ -10,8 +10,15 @@ import (
 	"github.com/menzerath/mcgen/web"
 )
 
+var (
+	commitRef  string
+	commitHash string
+)
+
 func main() {
 	initLogging()
+	slog.Info("starting mcgen", slog.Group("build", "ref", commitRef, "hash", commitHash))
+
 	go metrics.ExposeMetrics()
 
 	gen, err := generator.New()

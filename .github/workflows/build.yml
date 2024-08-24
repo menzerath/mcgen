@@ -31,7 +31,11 @@ jobs:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
           CGO_ENABLED: 0
-        run: go build -o build/mcgen_${{ matrix.goos }}_${{ matrix.goarch }}${{ env.SUFFIX }} main.go
+        run: |
+          go build \
+            -ldflags "-X main.commitRef=${{ github.ref_name }} -X main.commitHash=${{ github.sha }}" \
+            -o build/mcgen_${{ matrix.goos }}_${{ matrix.goarch }}${{ env.SUFFIX }} \
+            main.go
       - name: store binary
         uses: actions/upload-artifact@v4.3.6
         with:
