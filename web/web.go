@@ -34,7 +34,9 @@ func New(generator *generator.Generator) WebAPI {
 // StartWebAPI starts the WebAPI, registers all routes and blocks until the server is shut down.
 func (web WebAPI) StartWebAPI() {
 	app := fiber.New(fiber.Config{
-		ProxyHeader: fiber.HeaderXForwardedFor,
+		DisableStartupMessage: os.Getenv("MODE") == "production",
+		ServerHeader:          "mcgen",
+		ProxyHeader:           fiber.HeaderXForwardedFor,
 	})
 
 	// collect (but don't expose!) prometheus metrics
@@ -42,7 +44,11 @@ func (web WebAPI) StartWebAPI() {
 	app.Use(fiberPrometheus.Middleware)
 
 	// enable logging
-	app.Use(slogfiber.New(slog.Default()))
+	app.Use(slogfiber.NewWithConfig(slog.Default(), slogfiber.Config{
+		DefaultLevel:     slog.LevelDebug,
+		ClientErrorLevel: slog.LevelWarn,
+		ServerErrorLevel: slog.LevelError,
+	}))
 
 	// register all routes
 	app.Use("/", filesystem.New(filesystem.Config{
@@ -155,14 +161,6 @@ func (web WebAPI) achievementPost(c *fiber.Ctx) error {
 }
 
 func (web WebAPI) generateAndReturnAchievement(c *fiber.Ctx, request AchievementRequest) error {
-	slog.Info(
-		"generating image",
-		"background", request.Background,
-		"title", request.Title,
-		"text", request.Text,
-		"request-id", c.Context().UserValue("request-id"),
-	)
-
 	timeStart := time.Now()
 	achievement, err := web.Generator.Generate(request.Background, request.Title, request.Text)
 	if err != nil {
@@ -172,12 +170,21 @@ func (web WebAPI) generateAndReturnAchievement(c *fiber.Ctx, request Achievement
 				Message: "unknown background",
 			})
 		}
+
+		slog.Error("generating image", "error", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(ErrorResponse{
 			Error:   err.Error(),
 			Message: "could not generate achievement",
 		})
 	}
 	metrics.AchievementGenerationRuntime.Observe(time.Now().Sub(timeStart).Seconds())
+	slog.Info(
+		"generated image",
+		"background", request.Background,
+		"title", request.Title,
+		"text", request.Text,
+		"runtime", time.Now().Sub(timeStart).Seconds(),
+	)
 
 	// return image as download
 	if request.Output == AchievementOutputTypeDownload {
