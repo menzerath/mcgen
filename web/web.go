@@ -2,6 +2,7 @@
 package web
 
 import (
+	"fmt"
 	"log/slog"
 	"net/http"
 	"net/url"
@@ -77,8 +78,15 @@ func (web WebAPI) StartWebAPI() {
 		}
 	}()
 
-	// listen on port 8080
-	if err := app.Listen(":8080"); err != nil {
+	// determine the port to listen on
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	// listen on configured port
+	slog.Info("web api starting", "port", port)
+	if err := app.Listen(fmt.Sprintf(":%s", port)); err != nil {
 		slog.Error("web api listening", "error", err)
 	}
 	slog.Warn("web api stopped")
