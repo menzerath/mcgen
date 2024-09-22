@@ -46,8 +46,8 @@ github.com/prometheus/procfs v0.15.1/go.mod h1:fB45yRUv8NstnjriLhBQLuOUt+WW4BsoG
 github.com/rivo/uniseg v0.2.0/go.mod h1:J6wj4VEh+S6ZtnVlnTBMWIodfgj8LQOQFoIToxlJtxc=
 github.com/rivo/uniseg v0.4.7 h1:WUdvkW8uEhrYfLC4ZzdpI2ztxP1I582+49Oc5Mq64VQ=
 github.com/rivo/uniseg v0.4.7/go.mod h1:FN3SvrM+Zdj16jyLfmOkMNblXMcoc8DfTHruCPUcx88=
-github.com/samber/slog-fiber v1.16.3 h1:swgVDzLgSDukJJxxI++Nl+px6O/D+BqEsKSVBqjhli4=
-github.com/samber/slog-fiber v1.16.3/go.mod h1:RQr46XiBUwVNgWTiAizSGBxV9IbOpGbMMEEsth05iXg=
+github.com/samber/slog-fiber v1.16.4 h1:KbGGxP139olvdp4BTMXJ/UMbWAbjmyOqbtJj/yc1eGo=
+github.com/samber/slog-fiber v1.16.4/go.mod h1:RQr46XiBUwVNgWTiAizSGBxV9IbOpGbMMEEsth05iXg=
 github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
 github.com/tinylib/msgp v1.1.9 h1:SHf3yoO2sGA0veCJeCBYLHuttAVFHGm2RHgNodW7wQU=
