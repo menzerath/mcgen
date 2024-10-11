@@ -24,6 +24,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.1
       - name: run revive
-        uses: morphy2k/revive-action@v2.5.11
+        uses: morphy2k/revive-action@v2.6.0
         with:
           exclude: "./vendor/..."
