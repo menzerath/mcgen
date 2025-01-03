@@ -42,6 +42,8 @@ var uriPool = &sync.Pool{
 type URI struct {
 	noCopy noCopy
 
+	queryArgs Args
+
 	pathOriginal []byte
 	scheme       []byte
 	path         []byte
@@ -49,7 +51,11 @@ type URI struct {
 	hash         []byte
 	host         []byte
 
-	queryArgs       Args
+	fullURI    []byte
+	requestURI []byte
+
+	username        []byte
+	password        []byte
 	parsedQueryArgs bool
 
 	// Path values are sent as-is without normalization.
@@ -60,12 +66,6 @@ type URI struct {
 	// By default path values are normalized, i.e.
 	// extra slashes are removed, special characters are encoded.
 	DisablePathNormalizing bool
-
-	fullURI    []byte
-	requestURI []byte
-
-	username []byte
-	password []byte
 }
 
 // CopyTo copies uri contents to dst.
@@ -312,11 +312,11 @@ func (u *URI) parse(host, uri []byte, isTLS bool) error {
 	}
 
 	u.host = append(u.host, host...)
-	if parsedHost, err := parseHost(u.host); err != nil {
+	parsedHost, err := parseHost(u.host)
+	if err != nil {
 		return err
-	} else {
-		u.host = parsedHost
 	}
+	u.host = parsedHost
 	lowercaseBytes(u.host)
 
 	b := uri
@@ -536,21 +536,11 @@ func shouldEscape(c byte, mode encoding) bool {
 }
 
 func ishex(c byte) bool {
-	return ('0' <= c && c <= '9') ||
-		('a' <= c && c <= 'f') ||
-		('A' <= c && c <= 'F')
+	return hex2intTable[c] < 16
 }
 
 func unhex(c byte) byte {
-	switch {
-	case '0' <= c && c <= '9':
-		return c - '0'
-	case 'a' <= c && c <= 'f':
-		return c - 'a' + 10
-	case 'A' <= c && c <= 'F':
-		return c - 'A' + 10
-	}
-	return 0
+	return hex2intTable[c] & 15
 }
 
 // validOptionalPort reports whether port is either an empty string
