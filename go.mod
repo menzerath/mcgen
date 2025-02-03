@@ -3,7 +3,7 @@ module github.com/menzerath/mcgen
 go 1.23.5
 
 require (
-	github.com/ansrivas/fiberprometheus/v2 v2.7.0
+	github.com/ansrivas/fiberprometheus/v2 v2.8.0
 	github.com/fogleman/gg v1.3.0
 	github.com/gofiber/fiber/v2 v2.52.6
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
@@ -23,7 +23,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
-	github.com/prometheus/common v0.55.0 // indirect
+	github.com/prometheus/common v0.60.1 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
@@ -32,5 +32,5 @@ require (
 	go.opentelemetry.io/otel v1.29.0 // indirect
 	go.opentelemetry.io/otel/trace v1.29.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
-	google.golang.org/protobuf v1.34.2 // indirect
+	google.golang.org/protobuf v1.35.1 // indirect
 )
