@@ -1,6 +1,6 @@
 module github.com/menzerath/mcgen
 
-go 1.23.6
+go 1.24.0
 
 require (
 	github.com/ansrivas/fiberprometheus/v2 v2.8.0
