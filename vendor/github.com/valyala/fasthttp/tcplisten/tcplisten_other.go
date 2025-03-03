@@ -1,12 +1,10 @@
-// +build darwin dragonfly freebsd netbsd openbsd rumprun
+//go:build darwin || dragonfly || freebsd || netbsd || openbsd || rumprun || (zos && s390x)
 
 package tcplisten
 
-import (
-	"syscall"
-)
+import "golang.org/x/sys/unix"
 
-const soReusePort = syscall.SO_REUSEPORT
+const soReusePort = unix.SO_REUSEPORT
 
 func enableDeferAccept(fd int) error {
 	// TODO: implement SO_ACCEPTFILTER:dataready here
@@ -20,5 +18,5 @@ func enableFastOpen(fd int) error {
 
 func soMaxConn() (int, error) {
 	// TODO: properly implement it
-	return syscall.SOMAXCONN, nil
+	return unix.SOMAXCONN, nil
 }
