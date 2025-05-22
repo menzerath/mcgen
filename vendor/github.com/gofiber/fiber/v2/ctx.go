@@ -948,11 +948,11 @@ func (c *Ctx) Links(link ...string) {
 	bb := bytebufferpool.Get()
 	for i := range link {
 		if i%2 == 0 {
-			_ = bb.WriteByte('<')          //nolint:errcheck // This will never fail
-			_, _ = bb.WriteString(link[i]) //nolint:errcheck // This will never fail
-			_ = bb.WriteByte('>')          //nolint:errcheck // This will never fail
+			_ = bb.WriteByte('<')
+			_, _ = bb.WriteString(link[i])
+			_ = bb.WriteByte('>')
 		} else {
-			_, _ = bb.WriteString(`; rel="` + link[i] + `",`) //nolint:errcheck // This will never fail
+			_, _ = bb.WriteString(`; rel="` + link[i] + `",`)
 		}
 	}
 	c.setCanonical(HeaderLink, utils.TrimRight(c.app.getString(bb.Bytes()), ','))
@@ -1510,10 +1510,10 @@ func (c *Ctx) RedirectToRoute(routeName string, params Map, status ...int) error
 
 		i := 1
 		for k, v := range queries {
-			_, _ = queryText.WriteString(k + "=" + v) //nolint:errcheck // This will never fail
+			_, _ = queryText.WriteString(k + "=" + v)
 
 			if i != len(queries) {
-				_, _ = queryText.WriteString("&") //nolint:errcheck // This will never fail
+				_, _ = queryText.WriteString("&")
 			}
 			i++
 		}
@@ -1834,14 +1834,40 @@ func (c *Ctx) Status(status int) *Ctx {
 //
 // The returned value may be useful for logging.
 func (c *Ctx) String() string {
-	return fmt.Sprintf(
-		"#%016X - %s <-> %s - %s %s",
-		c.fasthttp.ID(),
-		c.fasthttp.LocalAddr(),
-		c.fasthttp.RemoteAddr(),
-		c.fasthttp.Request.Header.Method(),
-		c.fasthttp.URI().FullURI(),
-	)
+	// Get buffer from pool
+	buf := bytebufferpool.Get()
+
+	// Start with the ID, converting it to a hex string without fmt.Sprintf
+	buf.WriteByte('#')
+
+	// Convert ID to hexadecimal
+	id := strconv.FormatUint(c.fasthttp.ID(), 16)
+	// Pad with leading zeros to ensure 16 characters
+	for i := 0; i < (16 - len(id)); i++ {
+		buf.WriteByte('0')
+	}
+	buf.WriteString(id)
+	buf.WriteString(" - ")
+
+	// Add local and remote addresses directly
+	buf.WriteString(c.fasthttp.LocalAddr().String())
+	buf.WriteString(" <-> ")
+	buf.WriteString(c.fasthttp.RemoteAddr().String())
+	buf.WriteString(" - ")
+
+	// Add method and URI
+	buf.Write(c.fasthttp.Request.Header.Method())
+	buf.WriteByte(' ')
+	buf.Write(c.fasthttp.URI().FullURI())
+
+	// Allocate string
+	str := buf.String()
+
+	// Reset buffer
+	buf.Reset()
+	bytebufferpool.Put(buf)
+
+	return str
 }
 
 // Type sets the Content-Type HTTP header to the MIME type specified by the file extension.
