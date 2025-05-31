@@ -1,4 +1,4 @@
-FROM alpine:3.21
+FROM alpine:3.22
 LABEL maintainer="Marvin Menzerath <dev@marvin.pro>"
 
 ENV MODE=production
