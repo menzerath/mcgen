@@ -55,7 +55,7 @@ jobs:
         with:
           path: build/
       - name: login to github registry
-        uses: docker/login-action@v3.4.0
+        uses: docker/login-action@v3.5.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
