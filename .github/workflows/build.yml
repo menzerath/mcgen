@@ -51,7 +51,7 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v4.2.2
       - name: download binary
-        uses: actions/download-artifact@v4.3.0
+        uses: actions/download-artifact@v5.0.0
         with:
           path: build/
       - name: login to github registry
@@ -82,7 +82,7 @@ jobs:
       contents: write
     steps:
       - name: download all binaries
-        uses: actions/download-artifact@v4.3.0
+        uses: actions/download-artifact@v5.0.0
         with:
           path: build/
       - name: upload artifacts to release
