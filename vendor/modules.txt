@@ -2,7 +2,7 @@
 ## explicit; go 1.22
 github.com/andybalholm/brotli
 github.com/andybalholm/brotli/matchfinder
-# github.com/ansrivas/fiberprometheus/v2 v2.13.0
+# github.com/ansrivas/fiberprometheus/v2 v2.14.0
 ## explicit; go 1.23.0
 github.com/ansrivas/fiberprometheus/v2
 # github.com/beorn7/perks v1.0.1
@@ -84,7 +84,7 @@ github.com/samber/slog-fiber
 # github.com/valyala/bytebufferpool v1.0.0
 ## explicit
 github.com/valyala/bytebufferpool
-# github.com/valyala/fasthttp v1.64.0
+# github.com/valyala/fasthttp v1.65.0
 ## explicit; go 1.23.0
 github.com/valyala/fasthttp
 github.com/valyala/fasthttp/fasthttpadaptor
@@ -110,7 +110,7 @@ golang.org/x/image/font
 golang.org/x/image/font/basicfont
 golang.org/x/image/math/f64
 golang.org/x/image/math/fixed
-# golang.org/x/sys v0.34.0
+# golang.org/x/sys v0.35.0
 ## explicit; go 1.23.0
 golang.org/x/sys/unix
 golang.org/x/sys/windows
