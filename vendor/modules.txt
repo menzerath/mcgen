@@ -14,7 +14,7 @@ github.com/cespare/xxhash/v2
 # github.com/fogleman/gg v1.3.0
 ## explicit
 github.com/fogleman/gg
-# github.com/gofiber/fiber/v2 v2.52.9
+# github.com/gofiber/fiber/v2 v2.52.10
 ## explicit; go 1.20
 github.com/gofiber/fiber/v2
 github.com/gofiber/fiber/v2/internal/schema
