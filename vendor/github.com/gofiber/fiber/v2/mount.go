@@ -45,11 +45,11 @@ func (app *App) Mount(prefix string, subApp *App) Router {
 	}
 
 	// Support for configs of mounted-apps and sub-mounted-apps
-	for mountedPrefixes, mountedApp := range subApp.mountFields.appList {
+	for mountedPrefixes, subApp := range subApp.mountFields.appList {
 		path := getGroupPath(prefix, mountedPrefixes)
 
-		mountedApp.mountFields.mountPath = path
-		app.mountFields.appList[path] = mountedApp
+		subApp.mountFields.mountPath = path
+		app.mountFields.appList[path] = subApp
 	}
 
 	// register mounted group
@@ -75,11 +75,11 @@ func (grp *Group) Mount(prefix string, subApp *App) Router {
 	}
 
 	// Support for configs of mounted-apps and sub-mounted-apps
-	for mountedPrefixes, mountedApp := range subApp.mountFields.appList {
+	for mountedPrefixes, subApp := range subApp.mountFields.appList {
 		path := getGroupPath(groupPath, mountedPrefixes)
 
-		mountedApp.mountFields.mountPath = path
-		grp.app.mountFields.appList[path] = mountedApp
+		subApp.mountFields.mountPath = path
+		grp.app.mountFields.appList[path] = subApp
 	}
 
 	// register mounted group
