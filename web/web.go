@@ -15,8 +15,8 @@ import (
 	"github.com/menzerath/mcgen/assets"
 	"github.com/menzerath/mcgen/generator"
 	"github.com/menzerath/mcgen/metrics"
+	slogfiber "github.com/samber/slog-fiber"
 	//"github.com/prometheus/client_golang/prometheus"
-	//slogfiber "github.com/samber/slog-fiber"
 )
 
 // WebAPI provides a web API for the generator using the fiber framework.
@@ -43,13 +43,12 @@ func (web WebAPI) StartWebAPI() {
 	//fiberPrometheus := fiberprometheus.NewWithRegistry(prometheus.DefaultRegisterer, "", "http", "", nil)
 	//app.Use(fiberPrometheus.Middleware)
 
-	// TODO: this is still broken
 	// enable logging
-	//app.Use(slogfiber.NewWithConfig(slog.Default(), slogfiber.Config{
-	//	DefaultLevel:     slog.LevelDebug,
-	//	ClientErrorLevel: slog.LevelWarn,
-	//	ServerErrorLevel: slog.LevelError,
-	//}))
+	app.Use(slogfiber.NewWithConfig(slog.Default(), slogfiber.Config{
+		DefaultLevel:     slog.LevelDebug,
+		ClientErrorLevel: slog.LevelWarn,
+		ServerErrorLevel: slog.LevelError,
+	}))
 
 	// register all routes
 	app.Use("/", static.New("", static.Config{
