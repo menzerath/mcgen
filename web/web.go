@@ -4,20 +4,19 @@ package web
 import (
 	"fmt"
 	"log/slog"
-	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
 	"time"
 
-	"github.com/ansrivas/fiberprometheus/v2"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/filesystem"
+	//"github.com/ansrivas/fiberprometheus/v2"
+	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/static"
 	"github.com/menzerath/mcgen/assets"
 	"github.com/menzerath/mcgen/generator"
 	"github.com/menzerath/mcgen/metrics"
-	"github.com/prometheus/client_golang/prometheus"
-	slogfiber "github.com/samber/slog-fiber"
+	//"github.com/prometheus/client_golang/prometheus"
+	//slogfiber "github.com/samber/slog-fiber"
 )
 
 // WebAPI provides a web API for the generator using the fiber framework.
@@ -35,26 +34,26 @@ func New(generator *generator.Generator) WebAPI {
 // StartWebAPI starts the WebAPI, registers all routes and blocks until the server is shut down.
 func (web WebAPI) StartWebAPI() {
 	app := fiber.New(fiber.Config{
-		DisableStartupMessage: os.Getenv("MODE") == "production",
-		ServerHeader:          "mcgen",
-		ProxyHeader:           fiber.HeaderXForwardedFor,
+		ServerHeader: "mcgen",
+		ProxyHeader:  fiber.HeaderXForwardedFor,
 	})
 
+	// TODO: this is still broken
 	// collect (but don't expose!) prometheus metrics
-	fiberPrometheus := fiberprometheus.NewWithRegistry(prometheus.DefaultRegisterer, "", "http", "", nil)
-	app.Use(fiberPrometheus.Middleware)
+	//fiberPrometheus := fiberprometheus.NewWithRegistry(prometheus.DefaultRegisterer, "", "http", "", nil)
+	//app.Use(fiberPrometheus.Middleware)
 
+	// TODO: this is still broken
 	// enable logging
-	app.Use(slogfiber.NewWithConfig(slog.Default(), slogfiber.Config{
-		DefaultLevel:     slog.LevelDebug,
-		ClientErrorLevel: slog.LevelWarn,
-		ServerErrorLevel: slog.LevelError,
-	}))
+	//app.Use(slogfiber.NewWithConfig(slog.Default(), slogfiber.Config{
+	//	DefaultLevel:     slog.LevelDebug,
+	//	ClientErrorLevel: slog.LevelWarn,
+	//	ServerErrorLevel: slog.LevelError,
+	//}))
 
 	// register all routes
-	app.Use("/", filesystem.New(filesystem.Config{
-		Root:       http.FS(static),
-		PathPrefix: "static",
+	app.Use("/", static.New("", static.Config{
+		FS: FrontendFS(),
 	}))
 	app.Get("/a.php", web.legacyAPIQuery)
 	app.Get("/a/:background/:title/:text/*", web.legacyAPIPath)
@@ -62,7 +61,7 @@ func (web WebAPI) StartWebAPI() {
 	app.Post("/api/v1/achievement", web.achievementPost)
 
 	// register 404 handler
-	app.Use(func(c *fiber.Ctx) error {
+	app.Use(func(c fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).SendString("Whatever you are looking for, it's not here ¯\\_(ツ)_/¯")
 	})
 
@@ -86,13 +85,19 @@ func (web WebAPI) StartWebAPI() {
 
 	// listen on configured port
 	slog.Info("web api starting", "port", port)
-	if err := app.Listen(fmt.Sprintf(":%s", port)); err != nil {
+	err := app.Listen(
+		fmt.Sprintf(":%s", port),
+		fiber.ListenConfig{
+			DisableStartupMessage: os.Getenv("MODE") == "production",
+		},
+	)
+	if err != nil {
 		slog.Error("web api listening", "error", err)
 	}
 	slog.Warn("web api stopped")
 }
 
-func (web WebAPI) legacyAPIQuery(c *fiber.Ctx) error {
+func (web WebAPI) legacyAPIQuery(c fiber.Ctx) error {
 	// map the legacy icon ID to the new background name
 	background, _ := assets.LegacyIconMappings[c.Query("i")]
 
@@ -113,7 +118,7 @@ func (web WebAPI) legacyAPIQuery(c *fiber.Ctx) error {
 	)
 }
 
-func (web WebAPI) legacyAPIPath(c *fiber.Ctx) error {
+func (web WebAPI) legacyAPIPath(c fiber.Ctx) error {
 	// map the legacy icon ID to the new background name
 	background, _ := assets.LegacyIconMappings[c.Params("background")]
 
@@ -144,7 +149,7 @@ func (web WebAPI) legacyAPIPath(c *fiber.Ctx) error {
 	)
 }
 
-func (web WebAPI) achievementGet(c *fiber.Ctx) error {
+func (web WebAPI) achievementGet(c fiber.Ctx) error {
 	return web.generateAndReturnAchievement(
 		c,
 		AchievementRequest{
@@ -156,9 +161,9 @@ func (web WebAPI) achievementGet(c *fiber.Ctx) error {
 	)
 }
 
-func (web WebAPI) achievementPost(c *fiber.Ctx) error {
+func (web WebAPI) achievementPost(c fiber.Ctx) error {
 	var request AchievementRequest
-	if err := c.BodyParser(request); err != nil {
+	if err := c.Bind().Body(request); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(ErrorResponse{
 			Error:   err.Error(),
 			Message: "invalid request body",
@@ -168,7 +173,7 @@ func (web WebAPI) achievementPost(c *fiber.Ctx) error {
 	return web.generateAndReturnAchievement(c, request)
 }
 
-func (web WebAPI) generateAndReturnAchievement(c *fiber.Ctx, request AchievementRequest) error {
+func (web WebAPI) generateAndReturnAchievement(c fiber.Ctx, request AchievementRequest) error {
 	timeStart := time.Now()
 	achievement, err := web.Generator.Generate(request.Background, request.Title, request.Text)
 	if err != nil {
@@ -185,13 +190,13 @@ func (web WebAPI) generateAndReturnAchievement(c *fiber.Ctx, request Achievement
 			Message: "could not generate achievement",
 		})
 	}
-	metrics.AchievementGenerationRuntime.Observe(time.Now().Sub(timeStart).Seconds())
+	metrics.AchievementGenerationRuntime.Observe(time.Since(timeStart).Seconds())
 	slog.Info(
 		"generated image",
 		"background", request.Background,
 		"title", request.Title,
 		"text", request.Text,
-		"runtime", time.Now().Sub(timeStart).Seconds(),
+		"runtime", time.Since(timeStart).Seconds(),
 	)
 
 	// return image as download
