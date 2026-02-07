@@ -2,7 +2,7 @@
 # slog: Fiber middleware
 
 [![tag](https://img.shields.io/github/tag/samber/slog-fiber.svg)](https://github.com/samber/slog-fiber/releases)
-![Go Version](https://img.shields.io/badge/Go-%3E%3D%201.21-%23007d9c)
+![Go Version](https://img.shields.io/badge/Go-%3E%3D%201.25-%23007d9c)
 [![GoDoc](https://godoc.org/github.com/samber/slog-fiber?status.svg)](https://pkg.go.dev/github.com/samber/slog-fiber)
 ![Build Status](https://github.com/samber/slog-fiber/actions/workflows/test.yml/badge.svg)
 [![Go report](https://goreportcard.com/badge/github.com/samber/slog-fiber)](https://goreportcard.com/report/github.com/samber/slog-fiber)
@@ -15,6 +15,15 @@
 <div align="center">
   <hr>
   <sup><b>Sponsored by:</b></sup>
+  <br>
+  <a href="https://cast.ai/samuel">
+    <div>
+      <img src="https://github.com/user-attachments/assets/502f8fa8-e7e8-4754-a51f-036d0443e694" width="200" alt="Cast AI">
+    </div>
+    <div>
+      Cut Kubernetes & AI costs, boost application stability
+    </div>
+  </a>
   <br>
   <a href="https://www.dash0.com?utm_campaign=148395251-samber%20github%20sponsorship&utm_source=github&utm_medium=sponsorship&utm_content=samber">
     <div>
@@ -73,11 +82,11 @@
 ## 🚀 Install
 
 ```sh
-# Fiber v2 (current)
+# Fiber v3 (current)
 go get github.com/samber/slog-fiber
 
-# Fiber v3 (beta)
-go get github.com/samber/slog-fiber@fiber-v3
+# Fiber v2 (beta)
+go get github.com/samber/slog-fiber@fiber-v2
 ```
 
 **Compatibility**: go >= 1.21
@@ -126,8 +135,8 @@ slogfiber.RequestIDHeaderKey = "X-Request-Id"
 
 ```go
 import (
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/recover"
 	slogfiber "github.com/samber/slog-fiber"
 	"log/slog"
 )
@@ -141,7 +150,7 @@ app := fiber.New()
 app.Use(slogfiber.New(logger))
 app.Use(recover.New())
 
-app.Get("/", func(c *fiber.Ctx) error {
+app.Get("/", func(c fiber.Ctx) error {
 	return c.SendString("Hello, World 👋!")
 })
 
@@ -205,7 +214,7 @@ app := fiber.New()
 app.Use(
 	slogfiber.NewWithFilters(
 		logger,
-		slogfiber.Accept(func (c *fiber.Ctx) bool {
+		slogfiber.Accept(func (c fiber.Ctx) bool {
 			return xxx
 		}),
 		slogfiber.IgnoreStatus(401, 404),
@@ -253,7 +262,7 @@ app := fiber.New()
 app.Use(slogfiber.New(logger))
 app.Use(recover.New())
 
-app.Get("/", func(c *fiber.Ctx) error {
+app.Get("/", func(c fiber.Ctx) error {
 	return c.SendString("Hello, World 👋!")
 })
 
@@ -273,7 +282,7 @@ app := fiber.New()
 app.Use(slogfiber.New(logger.WithGroup("http")))
 app.Use(recover.New())
 
-app.Get("/", func(c *fiber.Ctx) error {
+app.Get("/", func(c fiber.Ctx) error {
 	return c.SendString("Hello, World 👋!")
 })
 
@@ -292,7 +301,7 @@ app := fiber.New()
 
 app.Use(recover.New())
 
-app.Get("/", slogfiber.New(logger), func(c *fiber.Ctx) error {
+app.Get("/", slogfiber.New(logger), func(c fiber.Ctx) error {
 	return c.SendString("Hello, World 👋!")
 })
 
@@ -312,7 +321,7 @@ app := fiber.New()
 app.Use(slogfiber.New(logger))
 app.Use(recover.New())
 
-app.Get("/", func(c *fiber.Ctx) error {
+app.Get("/", func(c fiber.Ctx) error {
 	// Add an attribute to a single log entry.
 	slogfiber.AddCustomAttributes(c, slog.String("foo", "bar"))
 	return c.SendString("Hello, World 👋!")
@@ -334,7 +343,7 @@ app := fiber.New()
 app.Use(slogfiber.New(logger))
 app.Use(recover.New())
 
-app.Get("/", func(c *fiber.Ctx) error {
+app.Get("/", func(c fiber.Ctx) error {
 	return c.SendString("Hello, World 👋!")
 })
 
