@@ -3,7 +3,7 @@ module github.com/menzerath/mcgen
 go 1.26.0
 
 require (
-	github.com/ansrivas/fiberprometheus/v2 v2.15.0
+	github.com/ansrivas/fiberprometheus/v2 v2.16.0
 	github.com/fogleman/gg v1.3.0
 	github.com/gofiber/fiber/v2 v2.52.11
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
@@ -28,9 +28,9 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.69.0 // indirect
-	go.opentelemetry.io/otel v1.39.0 // indirect
-	go.opentelemetry.io/otel/trace v1.39.0 // indirect
+	go.opentelemetry.io/otel v1.40.0 // indirect
+	go.opentelemetry.io/otel/trace v1.40.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
-	golang.org/x/sys v0.39.0 // indirect
+	golang.org/x/sys v0.40.0 // indirect
 	google.golang.org/protobuf v1.36.8 // indirect
 )
