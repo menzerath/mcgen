@@ -2,7 +2,7 @@
 ## explicit; go 1.22
 github.com/andybalholm/brotli
 github.com/andybalholm/brotli/matchfinder
-# github.com/ansrivas/fiberprometheus/v2 v2.16.0
+# github.com/ansrivas/fiberprometheus/v2 v2.17.0
 ## explicit; go 1.24.0
 github.com/ansrivas/fiberprometheus/v2
 # github.com/beorn7/perks v1.0.1

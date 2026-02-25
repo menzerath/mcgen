@@ -1,7 +1,7 @@
 github.com/andybalholm/brotli v1.2.0 h1:ukwgCxwYrmACq68yiUqwIWnGY0cTPox/M94sVwToPjQ=
 github.com/andybalholm/brotli v1.2.0/go.mod h1:rzTDkvFWvIrjDXZHkuS16NPggd91W3kUSvPlQ1pLaKY=
-github.com/ansrivas/fiberprometheus/v2 v2.16.0 h1:sHVKFrUDhGQ5t7rKVsRee+OxBUwRpM60jzFm2qBWyrw=
-github.com/ansrivas/fiberprometheus/v2 v2.16.0/go.mod h1:JfwJSPDEbqH61Lcs2MVGfnova/3LM900eCO0Pc9ep64=
+github.com/ansrivas/fiberprometheus/v2 v2.17.0 h1:p0gqs5LsSCWGoSFF44fCJkyU+XcE6TLRqEMu80b2iCo=
+github.com/ansrivas/fiberprometheus/v2 v2.17.0/go.mod h1:giWBvbFSHOHG8N2wjYhQG23oc/2pF9v1mN8CdZs5Z2g=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
