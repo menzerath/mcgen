@@ -3,9 +3,9 @@ module github.com/menzerath/mcgen
 go 1.26.0
 
 require (
-	github.com/ansrivas/fiberprometheus/v2 v2.16.0
+	github.com/ansrivas/fiberprometheus/v2 v2.17.0
 	github.com/fogleman/gg v1.3.0
-	github.com/gofiber/fiber/v2 v2.52.11
+	github.com/gofiber/fiber/v2 v2.52.12
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/prometheus/client_golang v1.23.2
 	github.com/samber/slog-fiber v1.20.1
