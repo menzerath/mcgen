@@ -7,7 +7,7 @@ require (
 	github.com/go-chi/chi/v5 v5.2.5
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/prometheus/client_golang v1.23.2
-	golang.org/x/image v0.38.0
+	golang.org/x/image v0.39.0
 )
 
 require (
