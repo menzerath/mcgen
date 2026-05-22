@@ -15,7 +15,6 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 	"github.com/menzerath/mcgen/assets"
 	"github.com/menzerath/mcgen/generator"
 	"github.com/menzerath/mcgen/metrics"
@@ -36,7 +35,6 @@ func New(generator *generator.Generator) WebAPI {
 // StartWebAPI starts the WebAPI, registers all routes and blocks until the server is shut down.
 func (web WebAPI) StartWebAPI() {
 	r := chi.NewRouter()
-	r.Use(middleware.RealIP)
 	r.Use(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Server", "mcgen")
