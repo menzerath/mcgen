@@ -4,7 +4,7 @@ go 1.26.4
 
 require (
 	github.com/fogleman/gg v1.3.0
-	github.com/go-chi/chi/v5 v5.3.0
+	github.com/go-chi/chi/v5 v5.3.1
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/prometheus/client_golang v1.23.2
 	golang.org/x/image v0.43.0
