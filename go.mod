@@ -1,6 +1,6 @@
 module github.com/menzerath/mcgen
 
-go 1.27.1
+go 1.27.2
 
 require (
 	github.com/fogleman/gg v1.3.0
